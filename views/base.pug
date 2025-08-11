@@ -1,0 +1,19 @@
+doctype html
+html
+    head
+        block head
+            meta(charset='UTF-8')
+            meta(name='viewport' content='width=device-width, initial-scale=1.0')
+            link(rel='stylesheet' href='/css/style.css')
+            link(rel='shortcut icon' type='image/png' href='/img/logo.png')
+            link(rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Lato:wght@300;700&family=Nunito:wght@400;600;700&display=swap')
+            title HikeAway | #{title}
+    body
+        include _header
+
+        block content
+
+
+        include _footer
+
+        script(src='/js/bundled/index.js')

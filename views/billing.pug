@@ -1,0 +1,62 @@
+extends base
+
+mixin navItem(link, text, icon, active)
+  li(class=`${active ? 'side-nav--active' : ''}`)
+    a(href=`${link}`)
+      svg
+        use(xlink:href=`/img/icons.svg#icon-${icon}`)
+      | #{text}
+
+block content
+  main.main
+    .user-view
+      nav.user-view__menu
+        ul.side-nav
+          +navItem('/me', 'Setări', 'settings')
+          +navItem('/my-tours', 'Rezervările mele', 'briefcase')
+          +navItem('/my-reviews', 'Recenziile mele', 'star')
+          +navItem('/billing', 'Facturare', 'credit-card', true)
+        - if (user.role === 'admin')
+          .admin-nav
+            h5.admin-nav__heading Admin
+            ul.side-nav
+              +navItem('/manage-tours', 'Gestionare tururi', 'map')
+              +navItem('/manage-reviews', 'Gestionare recenzii', 'star')
+              +navItem('/manage-bookings', 'Gestionare rezervări', 'briefcase')
+              +navItem('/manage-users', 'Gestionare utilizatori', 'users')
+
+      .user-view__content
+        .user-view__form-container
+
+          .tours-table-container
+            h2.heading-secondary.ma-bt-md Facturile mele
+
+            if bookings.length
+              table.table(
+                style='width: 100%; border-collapse: collapse; table-layout: auto; text-align: center;'
+              )
+                thead
+                  tr
+                    th Tur
+                    th Preț
+                    th Dată
+                    th Factură
+                tbody
+                  each booking in bookings
+                    tr
+                      td
+                        if booking.tour
+                          = booking.tour.name
+                        else
+                          | Tur indisponibil
+                      td= `${booking.price} RON`
+                      td= booking.createdAt.toLocaleDateString('ro-RO')
+                      td
+                        a.btn.btn--green.btn--compact(
+                          href=`/api/v1/billing/invoice/${booking._id}`,
+                          target='_blank',
+                          style='display: flex; align-items: center; justify-content: center;'
+                        )
+                          |  Descarcă Factură
+            else
+              p(style='padding:2rem;') Nu există facturi disponibile.

@@ -1,0 +1,25 @@
+extends baseEmail
+
+block content
+  p Salut,
+
+  p Ai primit un mesaj nou de contact prin formularul de pe site.  
+    Mai jos găsești detaliile:
+
+  table.btn.btn-primary(role='presentation', border='0', cellpadding='0', cellspacing='0', style='margin: 1.5rem 0;')
+    tbody
+      tr
+        td(align='left')
+          table(role='presentation', border='0', cellpadding='0', cellspacing='0')
+            tbody
+              tr
+                td
+                  p
+                    strong Nume: 
+                    | #{name}
+                  p
+                    strong Email: 
+                    | #{email}
+                  p
+                    strong Mesaj:
+                  p #{message}

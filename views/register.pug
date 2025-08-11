@@ -1,0 +1,21 @@
+extends base
+
+block content
+    main.main
+        .login-form
+            h2.heading-secondary.ma-bt-lg Creare cont
+            form.form.form--register
+                .form__group
+                    label.form__label(for='name') Nume
+                    input#name.form__input(type='text', placeholder='Ion Popescu', required)
+                .form__group
+                    label.form__label(for='email') Adresa de email
+                    input#email.form__input(type='email', placeholder='tu@exemplu.com', required)
+                .form__group.ma-bt-md
+                    label.form__label(for='password') Parolă
+                    input#password.form__input(type='password', placeholder='••••••••', required, minlength='8')
+                .form__group.ma-bt-md
+                    label.form__label(for='password-confirm') Confirmare parolă
+                    input#password-confirm.form__input(type='password', placeholder='••••••••', required, minlength='8')
+                .form__group
+                    button.btn.btn--green Înregistrare

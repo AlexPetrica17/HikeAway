@@ -1,0 +1,49 @@
+extends base
+
+block content
+    main.main
+        .card-container
+
+            each tour in tours
+                .card
+                    .card__header
+                        .card__picture
+                            .card__picture-overlay &nbsp;
+                            img.card__picture-img(src=`img/tours/${tour.imageCover}`, alt=`${tour.name}`)
+                        h3.heading-tertirary
+                            span= tour.name
+
+                    .card__details
+                        h4.card__sub-heading= `Tur de ${tour.duration} zile - ${tour.difficulty}`
+                        p.card__text= tour.summary
+                        .card__data
+                            svg.card__icon
+                                use(xlink:href='img/icons.svg#icon-map-pin')
+                            span= tour.startLocation.description
+                        
+                        - const startDate = new Date(tour.startDates[0])
+                        - const formattedDate = startDate.toLocaleString('ro-RO', { month: 'long', year: 'numeric' })
+                        - const capitalizedDate = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1)
+                        .card__data
+                            svg.card__icon
+                                use(xlink:href='img/icons.svg#icon-calendar')
+                            span= capitalizedDate
+                        .card__data
+                            svg.card__icon
+                                use(xlink:href='img/icons.svg#icon-flag')
+                            span= `${tour.locations.length} opriri`
+                        .card__data
+                            svg.card__icon
+                                use(xlink:href='img/icons.svg#icon-user')
+                            span= `${tour.maxGroupSize} persoane`
+
+                    .card__footer
+                        p
+                            span.card__footer-value= `${tour.price} RON`
+                            | 
+                            span.card__footer-text per persoană
+                        p.card__ratings
+                            span.card__footer-value= tour.ratingsAverage
+                            | 
+                            span.card__footer-text= `rating (${tour.ratingsQuantity} recenzii)`
+                        a.btn.btn--green.btn--small(href=`/tour/${tour.slug}`) Detalii

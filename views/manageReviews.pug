@@ -1,0 +1,99 @@
+extends base
+
+mixin navItem(link, text, icon, active)
+  li(class=`${active ? 'side-nav--active' : ''}`)
+    a(href=`${link}`)
+      svg
+        use(xlink:href=`img/icons.svg#icon-${icon}`)
+      | #{text}
+
+block content
+  main.main
+    .user-view
+      nav.user-view__menu
+        ul.side-nav
+          +navItem('/me', 'Setări', 'settings')
+          +navItem('/my-tours', 'Rezervările mele', 'briefcase')
+          +navItem('/my-reviews', 'Recenziile mele', 'star')
+          +navItem('/billing', 'Facturare', 'credit-card')
+        - if (user.role === 'admin')
+          .admin-nav
+            h5.admin-nav__heading Admin
+            ul.side-nav
+              +navItem('/manage-tours', 'Gestionare tururi', 'map')
+              +navItem('/manage-reviews', 'Gestionare recenzii', 'star', true)
+              +navItem('/manage-bookings', 'Gestionare rezervări', 'briefcase')
+              +navItem('/manage-users', 'Gestionare utilizatori', 'users')
+
+      .user-view__content
+        .user-view__booking-container
+          h2.heading-secondary.ma-bt-md Recenzii primite:
+
+          form(method='GET', action='/manage-reviews', class='form-filter')
+            .form__group
+              label.form__label(for='tourFilter') Tur:
+              select#tourFilter.form__input(name='tour')
+                option(value='') Toate tururile
+                each t in tours
+                  option(value=t._id selected=(t._id == selectedTour))= t.name
+
+            .form__group
+              label.form__label(for='userSearch') Caută utilizator:
+              input#userSearch.form__input(type='text', name='user', placeholder='Ex: Maria', value=searchQuery)
+
+            .form__group
+              button.btn.btn--green.btn--small(type='submit') Filtrează
+
+          .card-container--myTours
+            if reviews.length
+              each review in reviews
+                if review.tour
+                  .card
+                    .card__header
+                      .card__picture
+                        .card__picture-overlay &nbsp;
+                        img.card__picture-img(src=`/img/tours/${review.tour.imageCover}`, alt=`${review.tour.name}`)
+                      h3.heading-tertirary
+                        span= review.tour.name
+
+                    .card__details
+                      h4.card__sub-heading= `${review.rating} / 5`
+                      p.card__text= review.review
+
+                      .card__data.reviews__avatar
+                        if review.user
+                          img.reviews__avatar-img(src=`/img/users/${review.user.photo}`, alt=review.user.name)
+                          span.card__user-name= review.user.name
+                        else
+                          img.reviews__avatar-img(src='/img/users/default.jpg', alt='Anonim')
+                          h6.reviews__user Anonim
+
+                      .card__data
+                        svg.card__icon
+                          use(xlink:href='img/icons.svg#icon-calendar')
+                        - const d = new Date(review.createdAt)
+                        - const formattedDate = d.toLocaleDateString('ro-RO', { day: 'numeric', month: 'long', year: 'numeric' })
+                        span= formattedDate
+
+                    .card__footer
+                      button.btn.btn--red.btn--small.delete-review-btn(
+                        data-id=review._id,
+                        data-username=(review.user && review.user.name) || 'Anonim'
+                      ) Șterge
+            else
+              p.no-data-msg Nu există recenzii.
+
+          div#deleteModal.modal.hidden
+            .modal__content
+              h2.heading-secondary Ștergere recenzie
+              p Introdu motivul pentru care dorești să ștergi recenzia utilizatorului:
+              p.modal__user-name
+              textarea#deleteReason.form__input(rows="3" placeholder="Ex: Recenzia conține limbaj neadecvat...")
+              .modal__actions
+                button.btn.btn--red#confirmDeleteBtn Confirmă ștergerea
+                button.btn.btn--gray#cancelDeleteBtn Anulează
+
+          if totalPages > 1
+            nav.pagination
+              - for (let i = 1; i <= totalPages; i++)
+                a.btn.btn--small(class=(i === currentPage ? 'btn--green' : '') href=`/manage-reviews?page=${i}${selectedTour ? '&tour=' + selectedTour : ''}${searchQuery ? '&user=' + searchQuery : ''}`)= i

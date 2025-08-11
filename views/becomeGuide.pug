@@ -1,0 +1,23 @@
+extends base
+
+block content
+  main.main
+    .container
+      h2.heading-secondary Devino ghid
+      form#guideForm(enctype='multipart/form-data')
+        .form__group
+          label.form__label(for='name') Nume complet
+          input#name.form__input(type='text', name='name', required)
+        .form__group
+          label.form__label(for='email') Adresă de email
+          input#email.form__input(type='email', name='email', required)
+        .form__group
+          label.form__label(for='phone') Telefon
+          input#phone.form__input(type='tel', name='phone', required)
+        .form__group
+          label.form__label(for='experience') Experiență (opțional)
+          textarea#experience.form__input(name='experience', rows='4')
+        .form__group
+          label.form__label(for='cv') Încarcă CV (PDF, DOC, DOCX)
+          input#cv.form__input(type='file', name='cv', accept='.pdf,.doc,.docx', required)
+        button.btn.btn--green(type='submit') Trimite cererea

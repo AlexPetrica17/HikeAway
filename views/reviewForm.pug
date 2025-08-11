@@ -1,0 +1,49 @@
+extends base
+
+mixin navItem(link, text, icon, active)
+  li(class=`${active ? 'side-nav--active' : ''}`)
+    a(href=`${link}`)
+      svg
+        use(xlink:href=`/img/icons.svg#icon-${icon}`)
+      | #{text}
+
+block content
+  main.main
+    .user-view
+      nav.user-view__menu
+        ul.side-nav
+          +navItem('/me', 'Setări', 'settings')
+          +navItem('/my-tours', 'Rezervările mele', 'briefcase')
+          +navItem('/my-reviews', 'Recenziile mele', 'star', true)
+          +navItem('/billing', 'Facturare', 'credit-card')
+        - if (user.role === 'admin')
+          .admin-nav
+            h5.admin-nav__heading Admin
+            ul.side-nav
+              +navItem('/manage-tours', 'Gestionare tururi', 'map')
+              +navItem('/manage-reviews', 'Gestionare recenzii', 'star')
+              +navItem('/manage-bookings', 'Gestionare rezervări', 'briefcase')
+              +navItem('/manage-users', 'Gestionare utilizatori', 'users')
+
+      .user-view__content
+        .user-view__form-container
+          h2.heading-secondary.ma-bt-md Adaugă recenzie
+
+          form.form#reviewForm
+            input(type='hidden', name='tour', value=tour._id)
+
+            .form__group
+              label(for='review') Recenzia ta:
+              textarea.form__input(name='review', id='review', required placeholder='Cum a fost turul?')
+
+            .form__group
+              label(for='rating') Rating:
+              select.form__input(name='rating', id='rating', required)
+                option(value='5') 5 - Excelent
+                option(value='4') 4 - Foarte bun
+                option(value='3') 3 - Bun
+                option(value='2') 2 - Slab
+                option(value='1') 1 - Foarte slab
+
+            .form__group
+              button.btn.btn--green(type='submit') Trimite recenzia

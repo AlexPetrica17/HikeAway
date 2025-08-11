@@ -1,0 +1,73 @@
+extends base
+
+mixin navItem(link, text, icon, active)
+  li(class=`${active ? 'side-nav--active' : ''}`)
+    a(href=`${link}`)
+      svg
+        use(xlink:href=`/img/icons.svg#icon-${icon}`)
+      | #{text}
+
+block content
+  main.main
+    .user-view
+      nav.user-view__menu
+        ul.side-nav
+          +navItem('/me', 'Setări', 'settings')
+          +navItem('/my-tours', 'Rezervările mele', 'briefcase')
+          +navItem('/my-reviews', 'Recenziile mele', 'star', true)
+          +navItem('/billing', 'Facturare', 'credit-card')
+        - if (user.role === 'admin')
+          .admin-nav
+            h5.admin-nav__heading Admin
+            ul.side-nav
+              +navItem('/manage-tours', 'Gestionare tururi', 'map')
+              +navItem('/manage-reviews', 'Gestionare recenzii', 'star')
+              +navItem('/manage-bookings', 'Gestionare rezervări', 'briefcase')
+              +navItem('/manage-users', 'Gestionare utilizatori', 'users')
+
+      .user-view__content
+        .user-view__booking-container
+          h2.heading-secondary.ma-bt-md Recenziile tale
+
+          form(method='GET', action='/my-reviews')
+            .form__group
+              label.form__label(for='tour') Alege turul:
+              select.form__input#tour(name='tour')
+                option(value='') Toate tururile
+                each t in tours
+                  option(value=t._id selected=(t._id == selectedTour))= t.name
+            button.btn.btn--green.btn--compact(type='submit') Filtrează
+
+          .card-container--myTours
+            if reviews.length
+              each review in reviews
+                if review.tour
+                  .card
+                    .card__header
+                      .card__picture
+                        .card__picture-overlay &nbsp;
+                        img.card__picture-img(src=`/img/tours/${review.tour.imageCover}`, alt=`${review.tour.name}`)
+                      h3.heading-tertirary
+                        span= review.tour.name
+
+                    .card__details
+                      h4.card__sub-heading= `${review.rating} / 5 ⭐`
+                      p.card__text= review.review
+
+                    - const d = new Date(review.createdAt)
+                    - const formattedDate = d.toLocaleDateString('ro-RO', { day: 'numeric', month: 'long', year: 'numeric' })
+                    - const capitalizedDate = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1)
+
+                    .card__footer
+                      .card__data
+                        svg.card__icon
+                          use(xlink:href='/img/icons.svg#icon-calendar')
+                        span= capitalizedDate
+
+                      .card__actions
+                        button.btn.btn--green.btn--small.delete-review-user-btn(
+                          type='button',
+                          data-review-id=review._id
+                        ) Șterge
+            else
+              p(style='padding:2rem;') Nu ai lăsat încă nicio recenzie.

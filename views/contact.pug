@@ -1,0 +1,18 @@
+extends base
+
+block content
+  main.main
+    .container
+      h2.heading-secondary Contactează-ne
+      form#contactForm
+        .form__group
+          label.form__label(for='name') Nume complet
+          input#name.form__input(type='text', name='name', required)
+        .form__group
+          label.form__label(for='email') Adresă de email
+          input#email.form__input(type='email', name='email', required)
+        .form__group
+          label.form__label(for='message') Mesaj
+          textarea#message.form__input(name='message', rows='5', required)
+        button.btn.btn--green(type='submit') Trimite
+      p#formMessage

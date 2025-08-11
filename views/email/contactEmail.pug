@@ -1,0 +1,16 @@
+extends baseEmail
+
+block content
+  p Ai primit un mesaj nou:
+
+  p
+    strong Nume:
+    |  #{name}
+
+  p
+    strong Email:
+    |  #{email}
+
+  p
+    strong Mesaj:
+  p #{message}

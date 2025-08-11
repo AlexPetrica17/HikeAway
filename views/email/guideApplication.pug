@@ -1,0 +1,24 @@
+extends baseEmail
+
+block content
+  p Ai primit o cerere nouă pentru „Devino ghid”:
+
+  p
+    strong Nume:
+    |  #{name}
+
+  p
+    strong Email:
+    |  #{email}
+
+  p
+    strong Telefon:
+    |  #{phone}
+
+  if experience
+    p
+      strong Experiență:
+    p #{experience}
+
+  p
+    | CV-ul candidatului este atașat acestui email.
