@@ -1,5 +1,6 @@
 # HikeAway 🥾🌲
 **Aplicație Web pentru rezervarea de tururi în natură**
+**Bachelor's Thesis Project**
 
 ## 📖 Descriere
 HikeAway este o aplicație web pentru descoperirea și rezervarea de tururi ghidate în natură.  
@@ -26,7 +27,7 @@ Aplicația include generarea automată de facturi și trimiterea de emailuri aut
 - **Facturi**: generare automată pe baza rezervărilor  
 - **Emailuri**: sistem de trimitere emailuri automate (ex. Nodemailer)  
 
-## 🚀 Instalare și rulare local
+## 🚀 Instalare și rulare locala
 1. Clonează repository-ul:  
    ```bash
    git clone https://github.com/username/hikeaway.git
@@ -60,4 +61,4 @@ Aplicația include generarea automată de facturi și trimiterea de emailuri aut
 - export avansat de rapoarte și statistici pentru administratori  
 
 ## 👨‍🎓 Autor
-Proiect realizat de **[Numele Tău]**
+Proiect realizat de **Petrica Alexandru-Nicolae**
