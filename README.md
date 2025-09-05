@@ -1,5 +1,5 @@
 # HikeAway 🥾🌲
-**Aplicație Web pentru rezervarea de tururi în natură**
+**Aplicație Web pentru rezervarea de tururi în natură** 
 **Bachelor's Thesis Project**
 
 ## 📖 Descriere
